@@ -1,5 +1,6 @@
 package com.tweetFinder.controller;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -122,6 +123,7 @@ public class TweetFinderViewController {
 		Data data = new Gson().fromJson(jsonString, Data.class);
 		
 		List<TweetData> tweetData = data.getData();
+		List<Tweet> listTweets = new ArrayList<>();
 		for(int i = 0; i<tweetData.size(); i++) {
 			String id = tweetData.get(i).getId();
 			String text = tweetData.get(i).getText();
@@ -130,10 +132,8 @@ public class TweetFinderViewController {
 			t.setText(text);
 			t.setHashTag(hashtag);
 			kafkaSender.send(t);
+			listTweets.add(t);
 		}
-
-
-		List<Tweet> listTweets = service.listByHashTag(hashtag);
 
 		model.addAttribute("listTweet", listTweets);
 		return "index";

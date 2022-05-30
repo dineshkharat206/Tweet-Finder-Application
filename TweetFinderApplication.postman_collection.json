@@ -1,0 +1,97 @@
+{
+	"info": {
+		"_postman_id": "8482eb48-1a11-4bac-bbb5-5df7ae37ebf5",
+		"name": "TweetFinderApplication",
+		"description": "This application is used for finding tweets from the twitter. It takes input as hashTag for which the tweets are fetched.\n\nThis API can be used with other microservices.\n\nThis application uses basic auth for authorization.\n\nIt has two endpoints:\n\n1.  ViewTweets\n2.  SearchTweets.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3919673"
+	},
+	"item": [
+		{
+			"name": "ViewTweets",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "user1",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "user1",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"admin\",\r\n    \"password\":\"admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/restTweetFinder/tweet/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"restTweetFinder",
+						"tweet",
+						""
+					]
+				},
+				"description": "This endpoint fetches all the tweets available in the H2 Database."
+			},
+			"response": []
+		},
+		{
+			"name": "SearchTweets",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "user1",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "user1",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/restTweetFinder/tweet/deppvsheard",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"restTweetFinder",
+						"tweet",
+						"deppvsheard"
+					]
+				},
+				"description": "This endpoint makes a call to the Twitter endpoint to get the tweets with the corresponding hashTag passed as input."
+			},
+			"response": []
+		}
+	]
+}

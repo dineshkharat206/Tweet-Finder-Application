@@ -1,9 +1,11 @@
 package com.tweetFinder.controller;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.aspectj.apache.bcel.generic.MULTIANEWARRAY;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -20,7 +22,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.google.gson.Gson;
+import com.tweetFinder.model.Data;
 import com.tweetFinder.model.Tweet;
+import com.tweetFinder.model.TweetData;
 import com.tweetFinder.services.KafkaSender;
 import com.tweetFinder.services.TweetServices;
 
@@ -75,22 +80,22 @@ public class TweetFinderRestController {
 				LinkedHashMap.class);
 		LinkedHashMap<String, List> tweets = responseEntity.getBody();
 
-		Object values = tweets.get("data");
-
-		for (int i = 0; i < tweets.get("data").size(); i++) {
-			String id = tweets.get("data").get(i).toString().substring(4, 23);
-			int length = tweets.get("data").get(i).toString().length();
-			String text = tweets.get("data").get(i).toString().substring(30, length - 1);
-
+		String jsonString = new JSONObject(tweets).toString();
+		
+		Data data = new Gson().fromJson(jsonString, Data.class);
+		
+		List<TweetData> tweetData = data.getData();
+		listTweets = new ArrayList<>();
+		for(int i = 0; i<tweetData.size(); i++) {
+			String id = tweetData.get(i).getId();
+			String text = tweetData.get(i).getText();
 			Tweet t = new Tweet();
 			t.setId(id);
 			t.setText(text);
 			t.setHashTag(hashtag);
 			kafkaSender.send(t);
 			listTweets.add(t);
-		}
-
-		  
+		} 
 
 		return ResponseEntity.ok(listTweets);
 

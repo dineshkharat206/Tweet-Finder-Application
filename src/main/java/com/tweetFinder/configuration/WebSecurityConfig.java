@@ -27,9 +27,8 @@ public class WebSecurityConfig implements WebMvcConfigurer{
 		@Override
 		protected void configure(AuthenticationManagerBuilder auth) throws Exception{
 			auth.inMemoryAuthentication()
-			.withUser("user1").password("{noop}user1").authorities("user_role").and()
-			.withUser("user2").password("{noop}user2").authorities("user_role").and()
-			.withUser("admin").password("{noop}admin").authorities("ADMIN");
+			.withUser("user1").password("{noop}user1").roles("user_role").and()
+			.withUser("user2").password("{noop}user2").roles("user_role");
 		}
 		
 		 @Override
